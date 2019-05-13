@@ -39800,7 +39800,6 @@ function reduceInputIds(nodeIds, InputGraph) {
 }
 
 function notifyObservers(payload) {
-    console.log({ payload: payload });
     return function (dispatch, getState) {
         var id = payload.id,
             props = payload.props,
@@ -39957,7 +39956,6 @@ function notifyObservers(payload) {
             var outputIdAndProp = queuedObservers[i];
             var requestUid = newRequestQueue[i].uid;
 
-            console.log('updateoutput');
             promises.push(updateOutput(outputIdAndProp, getState, requestUid, dispatch, changedProps.map(function (prop) {
                 return id + '.' + prop;
             })));

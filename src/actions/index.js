@@ -223,7 +223,6 @@ function reduceInputIds(nodeIds, InputGraph) {
 }
 
 export function notifyObservers(payload) {
-    console.log({payload});
     return function(dispatch, getState) {
         const {id, props, excludedOutputs} = payload;
 
@@ -384,7 +383,6 @@ export function notifyObservers(payload) {
             const outputIdAndProp = queuedObservers[i];
             const requestUid = newRequestQueue[i].uid;
 
-            console.log('updateoutput');
             promises.push(
                 updateOutput(
                     outputIdAndProp,
