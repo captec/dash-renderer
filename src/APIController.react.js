@@ -9,10 +9,14 @@ import {
     computePaths,
     hydrateInitialOutputs,
     setLayout,
+    notifyObservers,
 } from './actions/index';
 import {getDependencies, getLayout} from './actions/api';
+
 import {getAppState} from './reducers/constants';
 import {STATUS} from './constants/constants';
+
+import {Gateway} from 'react-gateway';
 
 /**
  * Fire off API calls for initialization
@@ -128,6 +132,30 @@ class UnconnectedContainer extends Component {
                 </GlobalErrorContainer>
             );
         } else if (appLifecycle === getAppState('HYDRATED')) {
+            // if (layout.props.children[0].props.id === 'graph') {
+            //     const graphLayout = layout.props.children[0];
+            //     const controlsLayout = layout.props.children[1];
+
+            //     return (
+            //         <div>
+            //             <Gateway into="graph">
+            //                 <TreeContainer
+            //                     _dashprivate_registry={registry}
+            //                     _dashprivate_layout={graphLayout}
+            //                     _dashprivate_path={['props', 'children', 0]}
+            //                 />
+            //             </Gateway>
+            //             <Gateway into="controls">
+            //                 <TreeContainer
+            //                     _dashprivate_registry={registry}
+            //                     _dashprivate_layout={controlsLayout}
+            //                     _dashprivate_path={['props', 'children', 1]}
+            //                 />
+            //             </Gateway>
+            //         </div>
+            //     );
+            // }
+
             return (
                 <TreeContainer
                     _dashprivate_registry={registry}

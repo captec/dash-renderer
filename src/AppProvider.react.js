@@ -6,16 +6,26 @@ import AppContainer from './AppContainer.react';
 
 import PropTypes from 'prop-types';
 
-const AppProvider = ({hooks, name, enforceNew, initialConfig, registry}) => {
+const AppProvider = ({
+    hooks,
+    name,
+    enforceNew,
+    initialConfig,
+    registry,
+    children,
+}) => {
     const store = initializeStore({name, enforceNew});
 
     return (
         <Provider store={store}>
-            <AppContainer
-                hooks={hooks}
-                initialConfig={initialConfig}
-                registry={registry}
-            />
+            <div>
+                <AppContainer
+                    hooks={hooks}
+                    initialConfig={initialConfig}
+                    registry={registry}
+                />
+                {children}
+            </div>
         </Provider>
     );
 };

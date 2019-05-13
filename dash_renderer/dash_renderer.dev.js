@@ -34496,6 +34496,355 @@ module.exports = _curry3(function zipWith(fn, a, b) {
 
 /***/ }),
 
+/***/ "./node_modules/react-gateway/lib/Gateway.js":
+/*!***************************************************!*\
+  !*** ./node_modules/react-gateway/lib/Gateway.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+var _react = __webpack_require__(/*! react */ "react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _GatewayRegistry = __webpack_require__(/*! ./GatewayRegistry */ "./node_modules/react-gateway/lib/GatewayRegistry.js");
+
+var _GatewayRegistry2 = _interopRequireDefault(_GatewayRegistry);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Gateway = function (_React$Component) {
+  _inherits(Gateway, _React$Component);
+
+  function Gateway(props, context) {
+    _classCallCheck(this, Gateway);
+
+    var _this = _possibleConstructorReturn(this, _React$Component.call(this, props, context));
+
+    _this.gatewayRegistry = context.gatewayRegistry;
+    return _this;
+  }
+
+  Gateway.prototype.componentWillMount = function componentWillMount() {
+    this.id = this.gatewayRegistry.register(this.props.into, this.props.children);
+    this.renderIntoGatewayNode(this.props);
+  };
+
+  Gateway.prototype.componentWillReceiveProps = function componentWillReceiveProps(props) {
+    this.gatewayRegistry.clearChild(this.props.into, this.id);
+    this.renderIntoGatewayNode(props);
+  };
+
+  Gateway.prototype.componentWillUnmount = function componentWillUnmount() {
+    this.gatewayRegistry.unregister(this.props.into, this.id);
+  };
+
+  Gateway.prototype.renderIntoGatewayNode = function renderIntoGatewayNode(props) {
+    this.gatewayRegistry.addChild(this.props.into, this.id, props.children);
+  };
+
+  Gateway.prototype.render = function render() {
+    return null;
+  };
+
+  return Gateway;
+}(_react2.default.Component);
+
+Gateway.contextTypes = {
+  gatewayRegistry: _propTypes2.default.instanceOf(_GatewayRegistry2.default).isRequired
+};
+Gateway.propTypes = {
+  into: _propTypes2.default.string.isRequired,
+  children: _propTypes2.default.node
+};
+exports.default = Gateway;
+
+/***/ }),
+
+/***/ "./node_modules/react-gateway/lib/GatewayDest.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/react-gateway/lib/GatewayDest.js ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+var _react = __webpack_require__(/*! react */ "react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _GatewayRegistry = __webpack_require__(/*! ./GatewayRegistry */ "./node_modules/react-gateway/lib/GatewayRegistry.js");
+
+var _GatewayRegistry2 = _interopRequireDefault(_GatewayRegistry);
+
+var _reactPropTypes = __webpack_require__(/*! react-prop-types */ "./node_modules/react-prop-types/lib/index.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var GatewayDest = function (_React$Component) {
+  _inherits(GatewayDest, _React$Component);
+
+  function GatewayDest(props, context) {
+    _classCallCheck(this, GatewayDest);
+
+    var _this = _possibleConstructorReturn(this, _React$Component.call(this, props, context));
+
+    _this.state = {
+      children: null
+    };
+
+    _this.gatewayRegistry = context.gatewayRegistry;
+    return _this;
+  }
+
+  GatewayDest.prototype.componentWillMount = function componentWillMount() {
+    this.gatewayRegistry.addContainer(this.props.name, this);
+  };
+
+  GatewayDest.prototype.componentWillUnmount = function componentWillUnmount() {
+    this.gatewayRegistry.removeContainer(this.props.name, this);
+  };
+
+  GatewayDest.prototype.render = function render() {
+    var _props = this.props,
+        component = _props.component,
+        tagName = _props.tagName,
+        attrs = _objectWithoutProperties(_props, ['component', 'tagName']);
+
+    delete attrs.name;
+    return _react2.default.createElement(component || tagName || 'div', attrs, this.state.children);
+  };
+
+  return GatewayDest;
+}(_react2.default.Component);
+
+GatewayDest.contextTypes = {
+  gatewayRegistry: _propTypes2.default.instanceOf(_GatewayRegistry2.default).isRequired
+};
+GatewayDest.propTypes = {
+  name: _propTypes2.default.string.isRequired,
+  tagName: (0, _reactPropTypes.deprecated)(_propTypes2.default.string, 'Use "component" instead.'),
+  component: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.func])
+};
+exports.default = GatewayDest;
+
+/***/ }),
+
+/***/ "./node_modules/react-gateway/lib/GatewayProvider.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/react-gateway/lib/GatewayProvider.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+var _react = __webpack_require__(/*! react */ "react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _GatewayRegistry = __webpack_require__(/*! ./GatewayRegistry */ "./node_modules/react-gateway/lib/GatewayRegistry.js");
+
+var _GatewayRegistry2 = _interopRequireDefault(_GatewayRegistry);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var GatewayProvider = function (_React$Component) {
+  _inherits(GatewayProvider, _React$Component);
+
+  GatewayProvider.prototype.getChildContext = function getChildContext() {
+    return {
+      gatewayRegistry: this.gatewayRegistry
+    };
+  };
+
+  function GatewayProvider(props, context) {
+    _classCallCheck(this, GatewayProvider);
+
+    var _this = _possibleConstructorReturn(this, _React$Component.call(this, props, context));
+
+    _this.gatewayRegistry = new _GatewayRegistry2.default();
+    return _this;
+  }
+
+  GatewayProvider.prototype.render = function render() {
+    return this.props.children;
+  };
+
+  return GatewayProvider;
+}(_react2.default.Component);
+
+GatewayProvider.childContextTypes = {
+  gatewayRegistry: _propTypes2.default.instanceOf(_GatewayRegistry2.default).isRequired
+};
+GatewayProvider.propTypes = {
+  children: _propTypes2.default.element
+};
+exports.default = GatewayProvider;
+
+/***/ }),
+
+/***/ "./node_modules/react-gateway/lib/GatewayRegistry.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/react-gateway/lib/GatewayRegistry.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var GatewayRegistry = function () {
+  function GatewayRegistry() {
+    _classCallCheck(this, GatewayRegistry);
+
+    this._containers = {};
+    this._children = {};
+
+    // Unique key for children of a gateway
+    this._currentId = 0;
+  }
+
+  GatewayRegistry.prototype._renderContainer = function _renderContainer(name) {
+    var _this = this;
+
+    if (!this._containers[name] || !this._children[name]) {
+      return;
+    }
+
+    this._containers[name].setState({
+      children: Object.keys(this._children[name]).sort().map(function (id) {
+        return _this._children[name][id];
+      })
+    });
+  };
+
+  GatewayRegistry.prototype.addContainer = function addContainer(name, container) {
+    this._containers[name] = container;
+    this._renderContainer(name);
+  };
+
+  GatewayRegistry.prototype.removeContainer = function removeContainer(name) {
+    this._containers[name] = null;
+  };
+
+  GatewayRegistry.prototype.addChild = function addChild(name, gatewayId, child) {
+    this._children[name][gatewayId] = child;
+    this._renderContainer(name);
+  };
+
+  GatewayRegistry.prototype.clearChild = function clearChild(name, gatewayId) {
+    delete this._children[name][gatewayId];
+  };
+
+  GatewayRegistry.prototype.register = function register(name, child) {
+    this._children[name] = this._children[name] || {};
+
+    var gatewayId = name + "_" + this._currentId;
+    this._children[name][gatewayId] = child;
+    this._currentId += 1;
+
+    return gatewayId;
+  };
+
+  GatewayRegistry.prototype.unregister = function unregister(name, gatewayId) {
+    this.clearChild(name, gatewayId);
+    this._renderContainer(name);
+  };
+
+  return GatewayRegistry;
+}();
+
+exports.default = GatewayRegistry;
+
+/***/ }),
+
+/***/ "./node_modules/react-gateway/lib/index.js":
+/*!*************************************************!*\
+  !*** ./node_modules/react-gateway/lib/index.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.GatewayRegistry = exports.GatewayProvider = exports.GatewayDest = exports.Gateway = undefined;
+
+var _Gateway2 = __webpack_require__(/*! ./Gateway */ "./node_modules/react-gateway/lib/Gateway.js");
+
+var _Gateway3 = _interopRequireDefault(_Gateway2);
+
+var _GatewayDest2 = __webpack_require__(/*! ./GatewayDest */ "./node_modules/react-gateway/lib/GatewayDest.js");
+
+var _GatewayDest3 = _interopRequireDefault(_GatewayDest2);
+
+var _GatewayProvider2 = __webpack_require__(/*! ./GatewayProvider */ "./node_modules/react-gateway/lib/GatewayProvider.js");
+
+var _GatewayProvider3 = _interopRequireDefault(_GatewayProvider2);
+
+var _GatewayRegistry2 = __webpack_require__(/*! ./GatewayRegistry */ "./node_modules/react-gateway/lib/GatewayRegistry.js");
+
+var _GatewayRegistry3 = _interopRequireDefault(_GatewayRegistry2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.Gateway = _Gateway3.default;
+exports.GatewayDest = _GatewayDest3.default;
+exports.GatewayProvider = _GatewayProvider3.default;
+exports.GatewayRegistry = _GatewayRegistry3.default;
+
+/***/ }),
+
 /***/ "./node_modules/react-is/cjs/react-is.development.js":
 /*!***********************************************************!*\
   !*** ./node_modules/react-is/cjs/react-is.development.js ***!
@@ -34749,6 +35098,319 @@ if (false) {} else {
   module.exports = __webpack_require__(/*! ./cjs/react-is.development.js */ "./node_modules/react-is/cjs/react-is.development.js");
 }
 
+
+/***/ }),
+
+/***/ "./node_modules/react-prop-types/lib/all.js":
+/*!**************************************************!*\
+  !*** ./node_modules/react-prop-types/lib/all.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.default = all;
+
+var _createChainableTypeChecker = __webpack_require__(/*! ./utils/createChainableTypeChecker */ "./node_modules/react-prop-types/lib/utils/createChainableTypeChecker.js");
+
+var _createChainableTypeChecker2 = _interopRequireDefault(_createChainableTypeChecker);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function all() {
+  for (var _len = arguments.length, validators = Array(_len), _key = 0; _key < _len; _key++) {
+    validators[_key] = arguments[_key];
+  }
+
+  function allPropTypes() {
+    for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      args[_key2] = arguments[_key2];
+    }
+
+    var error = null;
+
+    validators.forEach(function (validator) {
+      if (error != null) {
+        return;
+      }
+
+      var result = validator.apply(undefined, args);
+      if (result != null) {
+        error = result;
+      }
+    });
+
+    return error;
+  }
+
+  return (0, _createChainableTypeChecker2.default)(allPropTypes);
+}
+
+/***/ }),
+
+/***/ "./node_modules/react-prop-types/lib/componentOrElement.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/react-prop-types/lib/componentOrElement.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+var _react = __webpack_require__(/*! react */ "react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _createChainableTypeChecker = __webpack_require__(/*! ./utils/createChainableTypeChecker */ "./node_modules/react-prop-types/lib/utils/createChainableTypeChecker.js");
+
+var _createChainableTypeChecker2 = _interopRequireDefault(_createChainableTypeChecker);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function validate(props, propName, componentName, location, propFullName) {
+  var propValue = props[propName];
+  var propType = typeof propValue === 'undefined' ? 'undefined' : _typeof(propValue);
+
+  if (_react2.default.isValidElement(propValue)) {
+    return new Error('Invalid ' + location + ' `' + propFullName + '` of type ReactElement ' + ('supplied to `' + componentName + '`, expected a ReactComponent or a ') + 'DOMElement. You can usually obtain a ReactComponent or DOMElement ' + 'from a ReactElement by attaching a ref to it.');
+  }
+
+  if ((propType !== 'object' || typeof propValue.render !== 'function') && propValue.nodeType !== 1) {
+    return new Error('Invalid ' + location + ' `' + propFullName + '` of value `' + propValue + '` ' + ('supplied to `' + componentName + '`, expected a ReactComponent or a ') + 'DOMElement.');
+  }
+
+  return null;
+}
+
+exports.default = (0, _createChainableTypeChecker2.default)(validate);
+
+/***/ }),
+
+/***/ "./node_modules/react-prop-types/lib/deprecated.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/react-prop-types/lib/deprecated.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.default = deprecated;
+
+var _warning = __webpack_require__(/*! warning */ "./node_modules/warning/browser.js");
+
+var _warning2 = _interopRequireDefault(_warning);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var warned = {};
+
+function deprecated(validator, reason) {
+  return function validate(props, propName, componentName, location, propFullName) {
+    var componentNameSafe = componentName || '<<anonymous>>';
+    var propFullNameSafe = propFullName || propName;
+
+    if (props[propName] != null) {
+      var messageKey = componentName + '.' + propName;
+
+      (0, _warning2.default)(warned[messageKey], 'The ' + location + ' `' + propFullNameSafe + '` of ' + ('`' + componentNameSafe + '` is deprecated. ' + reason + '.'));
+
+      warned[messageKey] = true;
+    }
+
+    for (var _len = arguments.length, args = Array(_len > 5 ? _len - 5 : 0), _key = 5; _key < _len; _key++) {
+      args[_key - 5] = arguments[_key];
+    }
+
+    return validator.apply(undefined, [props, propName, componentName, location, propFullName].concat(args));
+  };
+}
+
+/* eslint-disable no-underscore-dangle */
+function _resetWarned() {
+  warned = {};
+}
+
+deprecated._resetWarned = _resetWarned;
+/* eslint-enable no-underscore-dangle */
+
+/***/ }),
+
+/***/ "./node_modules/react-prop-types/lib/elementType.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/react-prop-types/lib/elementType.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+var _react = __webpack_require__(/*! react */ "react");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _createChainableTypeChecker = __webpack_require__(/*! ./utils/createChainableTypeChecker */ "./node_modules/react-prop-types/lib/utils/createChainableTypeChecker.js");
+
+var _createChainableTypeChecker2 = _interopRequireDefault(_createChainableTypeChecker);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function elementType(props, propName, componentName, location, propFullName) {
+  var propValue = props[propName];
+  var propType = typeof propValue === 'undefined' ? 'undefined' : _typeof(propValue);
+
+  if (_react2.default.isValidElement(propValue)) {
+    return new Error('Invalid ' + location + ' `' + propFullName + '` of type ReactElement ' + ('supplied to `' + componentName + '`, expected an element type (a string ') + 'or a ReactClass).');
+  }
+
+  if (propType !== 'function' && propType !== 'string') {
+    return new Error('Invalid ' + location + ' `' + propFullName + '` of value `' + propValue + '` ' + ('supplied to `' + componentName + '`, expected an element type (a string ') + 'or a ReactClass).');
+  }
+
+  return null;
+}
+
+exports.default = (0, _createChainableTypeChecker2.default)(elementType);
+
+/***/ }),
+
+/***/ "./node_modules/react-prop-types/lib/index.js":
+/*!****************************************************!*\
+  !*** ./node_modules/react-prop-types/lib/index.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.isRequiredForA11y = exports.elementType = exports.deprecated = exports.componentOrElement = exports.all = undefined;
+
+var _all2 = __webpack_require__(/*! ./all */ "./node_modules/react-prop-types/lib/all.js");
+
+var _all3 = _interopRequireDefault(_all2);
+
+var _componentOrElement2 = __webpack_require__(/*! ./componentOrElement */ "./node_modules/react-prop-types/lib/componentOrElement.js");
+
+var _componentOrElement3 = _interopRequireDefault(_componentOrElement2);
+
+var _deprecated2 = __webpack_require__(/*! ./deprecated */ "./node_modules/react-prop-types/lib/deprecated.js");
+
+var _deprecated3 = _interopRequireDefault(_deprecated2);
+
+var _elementType2 = __webpack_require__(/*! ./elementType */ "./node_modules/react-prop-types/lib/elementType.js");
+
+var _elementType3 = _interopRequireDefault(_elementType2);
+
+var _isRequiredForA11y2 = __webpack_require__(/*! ./isRequiredForA11y */ "./node_modules/react-prop-types/lib/isRequiredForA11y.js");
+
+var _isRequiredForA11y3 = _interopRequireDefault(_isRequiredForA11y2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.all = _all3.default;
+exports.componentOrElement = _componentOrElement3.default;
+exports.deprecated = _deprecated3.default;
+exports.elementType = _elementType3.default;
+exports.isRequiredForA11y = _isRequiredForA11y3.default;
+
+/***/ }),
+
+/***/ "./node_modules/react-prop-types/lib/isRequiredForA11y.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/react-prop-types/lib/isRequiredForA11y.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.default = isRequiredForA11y;
+function isRequiredForA11y(validator) {
+  return function validate(props, propName, componentName, location, propFullName) {
+    var componentNameSafe = componentName || '<<anonymous>>';
+    var propFullNameSafe = propFullName || propName;
+
+    if (props[propName] == null) {
+      return new Error('The ' + location + ' `' + propFullNameSafe + '` is required to make ' + ('`' + componentNameSafe + '` accessible for users of assistive ') + 'technologies such as screen readers.');
+    }
+
+    for (var _len = arguments.length, args = Array(_len > 5 ? _len - 5 : 0), _key = 5; _key < _len; _key++) {
+      args[_key - 5] = arguments[_key];
+    }
+
+    return validator.apply(undefined, [props, propName, componentName, location, propFullName].concat(args));
+  };
+}
+
+/***/ }),
+
+/***/ "./node_modules/react-prop-types/lib/utils/createChainableTypeChecker.js":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/react-prop-types/lib/utils/createChainableTypeChecker.js ***!
+  \*******************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.default = createChainableTypeChecker;
+/**
+ * Copyright 2013-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ */
+
+// Mostly taken from ReactPropTypes.
+
+function createChainableTypeChecker(validate) {
+  function checkType(isRequired, props, propName, componentName, location, propFullName) {
+    var componentNameSafe = componentName || '<<anonymous>>';
+    var propFullNameSafe = propFullName || propName;
+
+    if (props[propName] == null) {
+      if (isRequired) {
+        return new Error('Required ' + location + ' `' + propFullNameSafe + '` was not specified ' + ('in `' + componentNameSafe + '`.'));
+      }
+
+      return null;
+    }
+
+    for (var _len = arguments.length, args = Array(_len > 6 ? _len - 6 : 0), _key = 6; _key < _len; _key++) {
+      args[_key - 6] = arguments[_key];
+    }
+
+    return validate.apply(undefined, [props, propName, componentNameSafe, location, propFullNameSafe].concat(args));
+  }
+
+  var chainedCheckType = checkType.bind(null, false);
+  chainedCheckType.isRequired = checkType.bind(null, true);
+
+  return chainedCheckType;
+}
 
 /***/ }),
 
@@ -37152,6 +37814,78 @@ if ( true && module.exports) {
 
 /***/ }),
 
+/***/ "./node_modules/warning/browser.js":
+/*!*****************************************!*\
+  !*** ./node_modules/warning/browser.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * Copyright 2014-2015, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ */
+
+
+
+/**
+ * Similar to invariant but only logs a warning if the condition is not met.
+ * This can be used to log issues in development environments in critical
+ * paths. Removing the logging code for production environments will keep the
+ * same logic and follow the same code paths.
+ */
+
+var warning = function() {};
+
+if (true) {
+  warning = function(condition, format, args) {
+    var len = arguments.length;
+    args = new Array(len > 2 ? len - 2 : 0);
+    for (var key = 2; key < len; key++) {
+      args[key - 2] = arguments[key];
+    }
+    if (format === undefined) {
+      throw new Error(
+        '`warning(condition, format, ...args)` requires a warning ' +
+        'message argument'
+      );
+    }
+
+    if (format.length < 10 || (/^[s\W]*$/).test(format)) {
+      throw new Error(
+        'The warning format should be able to uniquely identify this ' +
+        'warning. Please, use a more descriptive format than: ' + format
+      );
+    }
+
+    if (!condition) {
+      var argIndex = 0;
+      var message = 'Warning: ' +
+        format.replace(/%s/g, function() {
+          return args[argIndex++];
+        });
+      if (typeof console !== 'undefined') {
+        console.error(message);
+      }
+      try {
+        // This error was thrown as a convenience so that you can use this stack
+        // to find the callsite that caused this warning to fire.
+        throw new Error(message);
+      } catch(x) {}
+    }
+  };
+}
+
+module.exports = warning;
+
+
+/***/ }),
+
 /***/ "./node_modules/webpack/buildin/amd-define.js":
 /*!***************************************!*\
   !*** (webpack)/buildin/amd-define.js ***!
@@ -37759,6 +38493,7 @@ var computeGraphs = _index.computeGraphs;
 var computePaths = _index.computePaths;
 var hydrateInitialOutputs = _index.hydrateInitialOutputs;
 var setLayout = _index.setLayout;
+var notifyObservers = _index.notifyObservers;
 
 var _api = __webpack_require__(/*! ./actions/api */ "./src/actions/api.js");
 
@@ -37772,6 +38507,10 @@ var getAppState = _constants.getAppState;
 var _constants2 = __webpack_require__(/*! ./constants/constants */ "./src/constants/constants.js");
 
 var STATUS = _constants2.STATUS;
+
+var _reactGateway = __webpack_require__(/*! react-gateway */ "./node_modules/react-gateway/lib/index.js");
+
+var Gateway = _reactGateway.Gateway;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -37864,7 +38603,8 @@ var UnconnectedContainer = function (_Component) {
                 dependenciesRequest = _props.dependenciesRequest,
                 layoutRequest = _props.layoutRequest,
                 layout = _props.layout,
-                config = _props.config;
+                config = _props.config,
+                registry = _props.registry;
             var errorLoading = this.state.errorLoading;
 
 
@@ -37885,12 +38625,38 @@ var UnconnectedContainer = function (_Component) {
                     GlobalErrorContainer,
                     null,
                     React.createElement(TreeContainer, {
+                        _dashprivate_registry: registry,
                         _dashprivate_layout: layout,
                         _dashprivate_path: []
                     })
                 );
             } else if (appLifecycle === getAppState('HYDRATED')) {
+                // if (layout.props.children[0].props.id === 'graph') {
+                //     const graphLayout = layout.props.children[0];
+                //     const controlsLayout = layout.props.children[1];
+
+                //     return (
+                //         <div>
+                //             <Gateway into="graph">
+                //                 <TreeContainer
+                //                     _dashprivate_registry={registry}
+                //                     _dashprivate_layout={graphLayout}
+                //                     _dashprivate_path={['props', 'children', 0]}
+                //                 />
+                //             </Gateway>
+                //             <Gateway into="controls">
+                //                 <TreeContainer
+                //                     _dashprivate_registry={registry}
+                //                     _dashprivate_layout={controlsLayout}
+                //                     _dashprivate_path={['props', 'children', 1]}
+                //                 />
+                //             </Gateway>
+                //         </div>
+                //     );
+                // }
+
                 return React.createElement(TreeContainer, {
+                    _dashprivate_registry: registry,
                     _dashprivate_layout: layout,
                     _dashprivate_path: []
                 });
@@ -37916,7 +38682,10 @@ UnconnectedContainer.propTypes = {
     paths: PropTypes.object,
     history: PropTypes.any,
     error: PropTypes.object,
-    config: PropTypes.object
+    config: PropTypes.object,
+    registry: PropTypes.shape({
+        resolve: PropTypes.func
+    })
 };
 
 var Container = connect(
@@ -38023,14 +38792,18 @@ var UnconnectedAppContainer = function (_React$Component) {
     _createClass(UnconnectedAppContainer, [{
         key: 'componentWillMount',
         value: function componentWillMount() {
-            var dispatch = this.props.dispatch;
+            var _props = this.props,
+                dispatch = _props.dispatch,
+                initialConfig = _props.initialConfig;
 
-            dispatch(readConfig());
+            dispatch(readConfig({ config: initialConfig }));
         }
     }, {
         key: 'render',
         value: function render() {
-            var config = this.props.config;
+            var _props2 = this.props,
+                config = _props2.config,
+                registry = _props2.registry;
 
             if (type(config) === 'Null') {
                 return React.createElement(
@@ -38043,7 +38816,7 @@ var UnconnectedAppContainer = function (_React$Component) {
                 React.Fragment,
                 null,
                 React.createElement(Toolbar, null),
-                React.createElement(APIController, null),
+                React.createElement(APIController, { registry: registry }),
                 React.createElement(DocumentTitle, null),
                 React.createElement(Loading, null),
                 React.createElement(Reloader, null)
@@ -38057,7 +38830,11 @@ var UnconnectedAppContainer = function (_React$Component) {
 UnconnectedAppContainer.propTypes = {
     hooks: PropTypes.object,
     dispatch: PropTypes.func,
-    config: PropTypes.object
+    config: PropTypes.object,
+    initialConfig: PropTypes.object,
+    registry: PropTypes.shape({
+        resolve: PropTypes.func
+    })
 };
 
 var AppContainer = connect(function (state) {
@@ -38109,15 +38886,29 @@ var PropTypes = _interopRequireDefault(_propTypes).default;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var store = initializeStore();
-
 var AppProvider = function AppProvider(_ref) {
-    var hooks = _ref.hooks;
+    var hooks = _ref.hooks,
+        name = _ref.name,
+        enforceNew = _ref.enforceNew,
+        initialConfig = _ref.initialConfig,
+        registry = _ref.registry,
+        children = _ref.children;
+
+    var store = initializeStore({ name: name, enforceNew: enforceNew });
 
     return React.createElement(
         Provider,
         { store: store },
-        React.createElement(AppContainer, { hooks: hooks })
+        React.createElement(
+            'div',
+            null,
+            React.createElement(AppContainer, {
+                hooks: hooks,
+                initialConfig: initialConfig,
+                registry: registry
+            }),
+            children
+        )
     );
 };
 
@@ -38125,14 +38916,21 @@ AppProvider.propTypes = {
     hooks: PropTypes.shape({
         request_pre: PropTypes.func,
         request_post: PropTypes.func
-    })
+    }),
+    initialConfig: PropTypes.object,
+    registry: PropTypes.shape({
+        resolve: PropTypes.func
+    }),
+    name: PropTypes.string,
+    enforceNew: PropTypes.bool
 };
 
 AppProvider.defaultProps = {
     hooks: {
         request_pre: null,
         request_post: null
-    }
+    },
+    enforceNew: false
 };
 
 exports.default = AppProvider;
@@ -38256,6 +39054,10 @@ var _checkPropTypes = __webpack_require__(/*! check-prop-types */ "./node_module
 
 var checkPropTypes = _interopRequireDefault(_checkPropTypes).default;
 
+var _reactGateway = __webpack_require__(/*! react-gateway */ "./node_modules/react-gateway/lib/index.js");
+
+var Gateway = _reactGateway.Gateway;
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -38280,9 +39082,10 @@ function validateComponent(componentDefinition) {
     }
 }
 
-var createContainer = function createContainer(component, path) {
+var createContainer = function createContainer(component, path, registry) {
     return isSimpleComponent(component) ? component : React.createElement(AugmentedTreeContainer, {
         key: component && component.props && component.props.id,
+        _dashprivate_registry: registry,
         _dashprivate_layout: component,
         _dashprivate_path: path
     });
@@ -38329,14 +39132,19 @@ var TreeContainer = function (_Component) {
                 return null;
             }
 
+            var _dashprivate_registry = this.props._dashprivate_registry;
+
+
             return Array.isArray(components) ? addIndex(map)(function (component, i) {
-                return createContainer(component, concat(path, ['props', 'children', i]));
-            }, components) : createContainer(components, concat(path, ['props', 'children']));
+                return createContainer(component, concat(path, ['props', 'children', i]), _dashprivate_registry);
+            }, components) : createContainer(components, concat(path, ['props', 'children']), _dashprivate_registry);
         }
     }, {
         key: 'getComponent',
         value: function getComponent(_dashprivate_layout, children, loading_state, setProps) {
-            var _dashprivate_config = this.props._dashprivate_config;
+            var _props = this.props,
+                _dashprivate_config = _props._dashprivate_config,
+                _dashprivate_registry = _props._dashprivate_registry;
 
 
             if (isEmpty(_dashprivate_layout)) {
@@ -38348,24 +39156,31 @@ var TreeContainer = function (_Component) {
             }
             validateComponent(_dashprivate_layout);
 
-            var element = Registry.resolve(_dashprivate_layout);
+            var element = _dashprivate_registry.resolve(_dashprivate_layout);
 
             var props = omit(['children'], _dashprivate_layout.props);
+            var gateway = props['data-gateway'];
 
-            return _dashprivate_config.props_check ? React.createElement(
-                ComponentErrorBoundary,
-                {
-                    componentType: _dashprivate_layout.type,
-                    componentId: _dashprivate_layout.props.id,
-                    key: element && element.props && element.props.id
-                },
-                React.createElement(CheckedComponent, {
-                    children: children,
-                    element: element,
-                    props: props,
-                    extraProps: { loading_state: loading_state, setProps: setProps },
-                    type: _dashprivate_layout.type
-                })
+            var component = _dashprivate_config.props_check ? React.createElement(CheckedComponent, {
+                children: children,
+                element: element,
+                props: props,
+                extraProps: { loading_state: loading_state, setProps: setProps },
+                type: _dashprivate_layout.type
+            }) : React.createElement.apply(React, [element, mergeAll([props, { loading_state: loading_state, setProps: setProps }])].concat(_toConsumableArray(Array.isArray(children) ? children : [children])));
+
+            return gateway ? React.createElement(
+                Gateway,
+                { into: gateway },
+                React.createElement(
+                    ComponentErrorBoundary,
+                    {
+                        componentType: _dashprivate_layout.type,
+                        componentId: _dashprivate_layout.props.id,
+                        key: element && element.props && element.props.id
+                    },
+                    component
+                )
             ) : React.createElement(
                 ComponentErrorBoundary,
                 {
@@ -38373,7 +39188,7 @@ var TreeContainer = function (_Component) {
                     componentId: _dashprivate_layout.props.id,
                     key: element && element.props && element.props.id
                 },
-                React.createElement.apply(React, [element, mergeAll([props, { loading_state: loading_state, setProps: setProps }])].concat(_toConsumableArray(Array.isArray(children) ? children : [children])))
+                component
             );
         }
     }, {
@@ -38382,10 +39197,10 @@ var TreeContainer = function (_Component) {
             var _this2 = this;
 
             return function (newProps) {
-                var _props = _this2.props,
-                    _dashprivate_dependencies = _props._dashprivate_dependencies,
-                    _dashprivate_dispatch = _props._dashprivate_dispatch,
-                    _dashprivate_path = _props._dashprivate_path;
+                var _props2 = _this2.props,
+                    _dashprivate_dependencies = _props2._dashprivate_dependencies,
+                    _dashprivate_dispatch = _props2._dashprivate_dispatch,
+                    _dashprivate_path = _props2._dashprivate_path;
 
 
                 var id = _this2.getLayoutProps().id;
@@ -38432,11 +39247,11 @@ var TreeContainer = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
-            var _props2 = this.props,
-                _dashprivate_dispatch = _props2._dashprivate_dispatch,
-                _dashprivate_layout = _props2._dashprivate_layout,
-                _dashprivate_loadingState = _props2._dashprivate_loadingState,
-                _dashprivate_path = _props2._dashprivate_path;
+            var _props3 = this.props,
+                _dashprivate_dispatch = _props3._dashprivate_dispatch,
+                _dashprivate_layout = _props3._dashprivate_layout,
+                _dashprivate_loadingState = _props3._dashprivate_loadingState,
+                _dashprivate_path = _props3._dashprivate_path;
 
 
             var layoutProps = this.getLayoutProps();
@@ -38458,15 +39273,18 @@ TreeContainer.propTypes = {
     _dashprivate_loadingState: PropTypes.object,
     _dashprivate_requestQueue: PropTypes.any,
     _dashprivate_config: PropTypes.object,
-    _dashprivate_path: PropTypes.array
+    _dashprivate_path: PropTypes.array,
+    _dashprivate_registry: PropTypes.shape({
+        resolve: PropTypes.func
+    })
 };
 
-function isLoadingComponent(layout) {
+function isLoadingComponent(layout, registry) {
     validateComponent(layout);
-    return Registry.resolve(layout)._dashprivate_isLoadingComponent;
+    return registry.resolve(layout)._dashprivate_isLoadingComponent;
 }
 
-function getNestedIds(layout) {
+function getNestedIds(layout, registry) {
     var ids = [];
     var queue = [layout];
 
@@ -38489,7 +39307,7 @@ function getNestedIds(layout) {
 
         if (children) {
             var filteredChildren = filter(function (child) {
-                return !isSimpleComponent(child) && !isLoadingComponent(child);
+                return !isSimpleComponent(child) && !isLoadingComponent(child, registry);
             }, Array.isArray(children) ? children : [children]);
 
             queue.push.apply(queue, _toConsumableArray(filteredChildren));
@@ -38499,8 +39317,8 @@ function getNestedIds(layout) {
     return ids;
 }
 
-function getLoadingState(layout, requestQueue) {
-    var ids = isLoadingComponent(layout) ? getNestedIds(layout) : layout && layout.props.id ? [layout.props.id] : [];
+function getLoadingState(layout, requestQueue, registry) {
+    var ids = isLoadingComponent(layout, registry) ? getNestedIds(layout, registry) : layout && layout.props.id ? [layout.props.id] : [];
 
     var isLoading = false;
     var loadingProp = void 0;
@@ -38541,12 +39359,15 @@ var AugmentedTreeContainer = exports.AugmentedTreeContainer = connect(function (
 }, function (dispatch) {
     return { dispatch: dispatch };
 }, function (stateProps, dispatchProps, ownProps) {
+    var registry = ownProps._dashprivate_registry || Registry;
+
     return {
+        _dashprivate_registry: registry,
         _dashprivate_dependencies: stateProps.dependencies,
         _dashprivate_dispatch: dispatchProps.dispatch,
         _dashprivate_layout: ownProps._dashprivate_layout,
         _dashprivate_path: ownProps._dashprivate_path,
-        _dashprivate_loadingState: getLoadingState(ownProps._dashprivate_layout, stateProps.requestQueue),
+        _dashprivate_loadingState: getLoadingState(ownProps._dashprivate_layout, stateProps.requestQueue, registry),
         _dashprivate_requestQueue: stateProps.requestQueue,
         _dashprivate_config: stateProps.config
     };
@@ -38979,6 +39800,7 @@ function reduceInputIds(nodeIds, InputGraph) {
 }
 
 function notifyObservers(payload) {
+    console.log({ payload: payload });
     return function (dispatch, getState) {
         var id = payload.id,
             props = payload.props,
@@ -39135,6 +39957,7 @@ function notifyObservers(payload) {
             var outputIdAndProp = queuedObservers[i];
             var requestUid = newRequestQueue[i].uid;
 
+            console.log('updateoutput');
             promises.push(updateOutput(outputIdAndProp, getState, requestUid, dispatch, changedProps.map(function (prop) {
                 return id + '.' + prop;
             })));
@@ -42092,7 +42915,7 @@ function config() {
     var action = arguments[1];
 
     if (action.type === getAction('READ_CONFIG')) {
-        return JSON.parse(document.getElementById('_dash-config').textContent);
+        return action.payload.config || JSON.parse(document.getElementById('_dash-config').textContent);
     }
     return state;
 } /* global document:true */
@@ -42885,17 +43708,22 @@ var store = void 0;
  */
 /* global module, require */
 
-var initializeStore = function initializeStore() {
-    if (store) {
+var initializeStore = function initializeStore(_ref) {
+    var name = _ref.name,
+        enforceNew = _ref.enforceNew;
+
+    if (store && !enforceNew) {
         return store;
     }
 
     // only attach logger to middleware in non-production mode
     store =  false // eslint-disable-line no-process-env
-    ? undefined : createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(), applyMiddleware(thunk));
+    ? undefined : createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__({ name: name }), applyMiddleware(thunk));
 
     // TODO - Protect this under a debug mode?
-    window.store = store; /* global window:true */
+    if (!enforceNew) {
+        window.store = store; /* global window:true */
+    }
 
     if (false) {}
 

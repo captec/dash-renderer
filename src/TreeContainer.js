@@ -24,6 +24,7 @@ import {
 import {notifyObservers, updateProps} from './actions';
 import ComponentErrorBoundary from './components/error/ComponentErrorBoundary.react';
 import checkPropTypes from 'check-prop-types';
+import {Gateway} from 'react-gateway';
 
 const SIMPLE_COMPONENT_TYPES = ['String', 'Number', 'Null', 'Boolean'];
 const isSimpleComponent = component =>
@@ -136,32 +137,41 @@ class TreeContainer extends Component {
         const element = _dashprivate_registry.resolve(_dashprivate_layout);
 
         const props = omit(['children'], _dashprivate_layout.props);
+        const gateway = props['data-gateway'];
 
-        return _dashprivate_config.props_check ? (
-            <ComponentErrorBoundary
-                componentType={_dashprivate_layout.type}
-                componentId={_dashprivate_layout.props.id}
-                key={element && element.props && element.props.id}
-            >
-                <CheckedComponent
-                    children={children}
-                    element={element}
-                    props={props}
-                    extraProps={{loading_state, setProps}}
-                    type={_dashprivate_layout.type}
-                />
-            </ComponentErrorBoundary>
+        const component = _dashprivate_config.props_check ? (
+            <CheckedComponent
+                children={children}
+                element={element}
+                props={props}
+                extraProps={{loading_state, setProps}}
+                type={_dashprivate_layout.type}
+            />
+        ) : (
+            React.createElement(
+                element,
+                mergeAll([props, {loading_state, setProps}]),
+                ...(Array.isArray(children) ? children : [children])
+            )
+        );
+
+        return gateway ? (
+            <Gateway into={gateway}>
+                <ComponentErrorBoundary
+                    componentType={_dashprivate_layout.type}
+                    componentId={_dashprivate_layout.props.id}
+                    key={element && element.props && element.props.id}
+                >
+                    {component}
+                </ComponentErrorBoundary>
+            </Gateway>
         ) : (
             <ComponentErrorBoundary
                 componentType={_dashprivate_layout.type}
                 componentId={_dashprivate_layout.props.id}
                 key={element && element.props && element.props.id}
             >
-                {React.createElement(
-                    element,
-                    mergeAll([props, {loading_state, setProps}]),
-                    ...(Array.isArray(children) ? children : [children])
-                )}
+                {component}
             </ComponentErrorBoundary>
         );
     }
